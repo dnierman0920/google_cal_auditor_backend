@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 
+def allEvents(request):
+    
+    return HttpResponse("This will show all Calendar Events")
 def timeInMeetings(request):
     return HttpResponse("This will show Total time spent in meetings per month for the last 3 months")
 def mostMeetings(request):

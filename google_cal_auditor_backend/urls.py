@@ -19,6 +19,7 @@ from . import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", views.allEvents, name = 'allEvents'),
     # 1. Total time spent in meetings per month for the last 3 months
     path("time-in-meetings/", views.timeInMeetings, name='time-in-meetings'),
     # 2. Which month had the highest number of meetings / least number of meetings
