@@ -20,19 +20,25 @@ from . import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.allEvents, name = 'allEvents'),
+
     # 1. Total time spent in meetings per month for the last 3 months
     path("time-in-meetings/", views.timeInMeetings, name='time-in-meetings'),
+
     # 2. Which month had the highest number of meetings / least number of meetings
     path("most-meetings/", views.mostMeetings,name = "most-meetings"),
+
     # 3. Busiest week / relaxed week - you can select a threshold of your choice
     path("busiest-week/", views.busiestWeek, name = 'busiest-week'),
     path("relaxed-week/", views.relaxedWeek, name = 'relaxed-week'),
+
     # 4. The average number of meetings per week, average time spent every week in
     # meetings.
     path("average-number-of-meetings/", views.averageNumberOfMeetings),
     path("average-time-in-meetings/", views.averageTimeInMeetings),
+
     # 5. Top 3 persons with whom you have meetings
     path("most-common-attendees/", views.mostCommonAttendees),
+    
     # 6. Time spent in Recruiting/Conducting interviews
     path("time-spent-interviewing/", views.timeSpentInterviewing),
 ]

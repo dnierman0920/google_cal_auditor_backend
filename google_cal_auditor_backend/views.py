@@ -1,62 +1,63 @@
 from django.http import HttpResponse
 import datetime
-from pprint import pprint
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from google_cal_auditor_backend.authenticate import authenitcate
+from .toolbox.datesAndTimes import event_duration
+from rest_framework import status
+from .authenticate import authenitcate
+from dateutil.relativedelta import relativedelta
+from django.http import JsonResponse 
 
-# # If modifying these scopes, delete the file token.json.
-# SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+nowDatetime = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+
+def pastMonths(monthsAgo: int):
+    # Subtract 20 months from a given datetime object
+    return datetime.datetime.now() - relativedelta(months=monthsAgo) 
 
 service  = authenitcate()
 
 def allEvents(request):
 
-    # creds = None
-    # # The file token.json stores the user's access and refresh tokens, and is
-    # # created automatically when the authorization flow completes for the first
-    # # time.
-    # if os.path.exists('token.json'):
-    #     creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    # # If there are no (valid) credentials available, let the user log in.
-    # if not creds or not creds.valid:
-    #     if creds and creds.expired and creds.refresh_token:
-    #         creds.refresh(Request())
-    #     else:
-    #         flow = InstalledAppFlow.from_client_secrets_file(
-    #             'credentials.json', SCOPES)
-    #         creds = flow.run_local_server(port=0)
-    #     # Save the credentials for the next run
-    #     with open('token.json', 'w') as token:
-    #         token.write(creds.to_json())
-
-    # try:
-    #     service = build('calendar', 'v3', credentials=creds)
-
         # Call the Calendar API
-        now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-        print('Getting the upcoming 10 events')
-        events_result = service.events().list(calendarId='primary', timeMin=now,
-                                              maxResults=1, singleEvents=True,
+        events_result = service.events().list(calendarId='primary',
+                                              singleEvents=True,
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
 
         if not events:
             print('No upcoming events found.')
-            return
+            return HttpResponse("There are no calemdar events to display")
 
         # Prints the start and name of the next 10 events
-        for event in events:
-            start = event['start'].get('dateTime', event['start'].get('date'))
-            print(start, event['summary'])
+        return JsonResponse({'AllEvents': events }, status=status.HTTP_201_CREATED)
 
-        return HttpResponse(events)
-
+# This will show Total time spent in meetings per month for the last 3 months
 def timeInMeetings(request):
-    return HttpResponse("This will show Total time spent in meetings per month for the last 3 months")
+        # variables to return in response
+        totalMeetingDuration = datetime.timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0) # total time in meetings
+        print("totalMeetingDuration Starting Point: ", totalMeetingDuration)
+        todayDate = nowDatetime
+        threeMonthsAgoDate = pastMonths(3).isoformat() + 'Z' 
+
+        # Call the Calendar API
+        events_result = service.events().list(calendarId='primary',
+                                              singleEvents=True,
+                                              timeMax = todayDate,
+                                              timeMin = threeMonthsAgoDate,
+                                              orderBy='startTime').execute()
+        events = events_result.get('items', [])
+        for event in events:
+            duration = event_duration(event)
+            if duration:   # sometimes duration returns None for all day events
+                totalMeetingDuration += duration
+            days, hours, minutes = totalMeetingDuration.days, totalMeetingDuration.seconds // 3600, totalMeetingDuration.seconds // 60 % 60
+        return JsonResponse({'Total Meeting Duration':
+                        {
+                            "starting_date": threeMonthsAgoDate,
+                            "ending_date": todayDate,
+                            "days": days,
+                            "hours": hours,
+                            "minutes": minutes
+                        } }, status=status.HTTP_200_OK)
+
 def mostMeetings(request):
     return HttpResponse("This will show Which month had the highest number of meetings / least number of meetings")
 def busiestWeek(request):

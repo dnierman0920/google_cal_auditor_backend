@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./google_cal_auditor_backend/toolbox"
+    ]
+}
