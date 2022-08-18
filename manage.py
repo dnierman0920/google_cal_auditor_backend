@@ -3,6 +3,7 @@
 import os
 import sys
 
+from google_cal_auditor_backend.authenticate import authenitcate
 
 def main():
     """Run administrative tasks."""
@@ -18,7 +19,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 if __name__ == "__main__":
     main()
