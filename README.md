@@ -11,7 +11,7 @@
  {{url}}/time-in-meetings/
 ```
 #### Example JSON Response:
-```
+```JSON
 {
     "Total Meeting Duration": {
         "starting_date": "2022-05-18T19:50:45.796794Z",
