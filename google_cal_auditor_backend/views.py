@@ -69,7 +69,7 @@ def mostMeetings(request):
                                             # timeMin = threeMonthsAgoDate,
                                             orderBy='startTime').execute()
     events = events_result.get('items', [])
-    most_and_least_meetings_per_month(events_per_month(events))
+    print(most_and_least_meetings_per_month(events_per_month(events)))
 
     return HttpResponse("This will show Which month had the highest number of meetings / least number of meetings")
 def busiestWeek(request):
