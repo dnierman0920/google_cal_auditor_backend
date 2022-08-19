@@ -22,3 +22,19 @@
     }
 }
 ```
+---
+### METHOD: GET
+ ```
+ {{url}}/most-meetings/
+```
+#### Example JSON Response:
+```JSON
+{
+    "most_and_least_meetings_per_month": {
+        "most_meetings_month": "2018, 7",
+        "most_meetings": 24,
+        "least_meetings_month": "2012, 6",
+        "lest_meetings": 1
+    }
+}
+```

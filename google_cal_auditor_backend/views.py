@@ -60,18 +60,18 @@ def timeInMeetings(request):
 
 def mostMeetings(request):
     todayDate = nowDatetime
-    threeMonthsAgoDate = pastMonths(3).isoformat() + 'Z' 
 
     # Call the Calendar API
     events_result = service.events().list(calendarId='primary',
                                             singleEvents=True,
                                             timeMax = todayDate,
-                                            # timeMin = threeMonthsAgoDate,
                                             orderBy='startTime').execute()
     events = events_result.get('items', [])
-    print(most_and_least_meetings_per_month(events_per_month(events)))
+    most_least_meetings_by_month = most_and_least_meetings_per_month(events_per_month(events))
 
-    return HttpResponse("This will show Which month had the highest number of meetings / least number of meetings")
+    return JsonResponse({"most_and_least_meetings_per_month":
+                most_least_meetings_by_month}
+                 , status=status.HTTP_200_OK)
 def busiestWeek(request):
     return HttpResponse("This will show Busiest week - you can select a threshold of your choice")
 def relaxedWeek(request):

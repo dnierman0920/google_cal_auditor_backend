@@ -56,10 +56,11 @@ def events_per_month(events):
 
 # COME BACK TO THIS AND REEVALUATE HOW TO DEAL WITH MONTHS THAT HAVE SAME NUMBER OF MEETINGS!!!
 def most_and_least_meetings_per_month(events_count: dict):
-    """""" 
+    """this function returns a dictionary that has the 'year, month' as the key and number of meetings
+     that month as the value - for the months with the most and least meetings""" 
     # this will hold the key value of the year and month
-    most_meetings_month = {}
-    least_meetings_month = {}
+    most_meetings_month = None
+    least_meetings_month = None
 
     most_meetings = None
     least_meetings = None
@@ -77,23 +78,23 @@ def most_and_least_meetings_per_month(events_count: dict):
             # find most meetings
             if events_count[year][month] > most_meetings:
                 most_meetings = events_count[year][month]
-                most_meetings_month = {} # remove the old value to replace with new below
-                most_meetings_month[str(year) + ", " + str(month)] = most_meetings
+                most_meetings_month = str(year) + ", " + str(month)
 
             # find least meetings (not including months with zero meetings)
             if least_meetings and events_count[year][month] > 0 and events_count[year][month] < least_meetings: # need to check if least meetings is not None to proceed
                 least_meetings = events_count[year][month]
-                least_meetings_month = {} # remove the old value to replace with new below
-                print("year type: ", type(year))
-                print("month type: ", type(month))
-                least_meetings_month[str(year) + ", " + str(month)] = least_meetings
+                least_meetings_month = str(year) + ", " + str(month)
 
     # print("most_meetings_month: ", most_meetings_month )
     # print("least_meetings_month: ", least_meetings_month )
 
     return(
-        {"most_meetings_month": most_meetings_month},
-        {"least_meetings_month": least_meetings_month}
+        {
+        "most_meetings_month": most_meetings_month,
+        "most_meetings": most_meetings,
+        "least_meetings_month": least_meetings_month,
+        "lest_meetings": least_meetings
+        }
     )
 
 
