@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 import datetime
-from .toolbox.datesAndTimes import event_duration
+from .toolbox.datesAndTimes import event_duration, events_per_month, most_and_least_meetings_per_month
 from rest_framework import status
 from .authenticate import authenitcate
 from dateutil.relativedelta import relativedelta
@@ -59,6 +59,18 @@ def timeInMeetings(request):
                         } }, status=status.HTTP_200_OK)
 
 def mostMeetings(request):
+    todayDate = nowDatetime
+    threeMonthsAgoDate = pastMonths(3).isoformat() + 'Z' 
+
+    # Call the Calendar API
+    events_result = service.events().list(calendarId='primary',
+                                            singleEvents=True,
+                                            timeMax = todayDate,
+                                            # timeMin = threeMonthsAgoDate,
+                                            orderBy='startTime').execute()
+    events = events_result.get('items', [])
+    most_and_least_meetings_per_month(events_per_month(events))
+
     return HttpResponse("This will show Which month had the highest number of meetings / least number of meetings")
 def busiestWeek(request):
     return HttpResponse("This will show Busiest week - you can select a threshold of your choice")
