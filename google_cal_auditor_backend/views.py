@@ -49,7 +49,7 @@ def timeInMeetings(request):
             if duration:   # sometimes duration returns None for all day events
                 totalMeetingDuration += duration
             days, hours, minutes = totalMeetingDuration.days, totalMeetingDuration.seconds // 3600, totalMeetingDuration.seconds // 60 % 60
-        return JsonResponse({'Total_Meeting_Duration':
+        return JsonResponse({'total_meeting_duration':
                         {
                             "starting_date": threeMonthsAgoDate,
                             "ending_date": todayDate,
