@@ -31,9 +31,15 @@
 ```JSON
 {
     "most_and_least_meetings_per_month": {
-        "most_meetings_month": "2018, 7",
+        "most_meetings_month": {
+            "year": 2018,
+            "month": 7
+        },
         "most_meetings": 24,
-        "least_meetings_month": "2012, 6",
+        "least_meetings_month": {
+            "year": 2012,
+            "month": 6
+        },
         "lest_meetings": 1
     }
 }

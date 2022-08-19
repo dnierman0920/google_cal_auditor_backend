@@ -78,12 +78,18 @@ def most_and_least_meetings_per_month(events_count: dict):
             # find most meetings
             if events_count[year][month] > most_meetings:
                 most_meetings = events_count[year][month]
-                most_meetings_month = str(year) + ", " + str(month)
+                most_meetings_month = {
+                                        "year":year,
+                                        "month":month
+                                    }
 
             # find least meetings (not including months with zero meetings)
             if least_meetings and events_count[year][month] > 0 and events_count[year][month] < least_meetings: # need to check if least meetings is not None to proceed
                 least_meetings = events_count[year][month]
-                least_meetings_month = str(year) + ", " + str(month)
+                least_meetings_month = {
+                                        "year":year,
+                                        "month":month
+                                    }
 
     # print("most_meetings_month: ", most_meetings_month )
     # print("least_meetings_month: ", least_meetings_month )
