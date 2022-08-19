@@ -21,10 +21,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.allEvents, name = 'allEvents'),
 
-    # 1. Total time spent in meetings per month for the last 3 months
+    # 1. Total time spent in meetings per month for the last 3 months - COMPLETED
     path("time-in-meetings/", views.timeInMeetings, name='time-in-meetings'),
 
-    # 2. Which month had the highest number of meetings / least number of meetings
+    # 2. Which month had the highest number of meetings / least number of meetings - COMPLETED
     path("most-meetings/", views.mostMeetings,name = "most-meetings"),
 
     # 3. Busiest week / relaxed week - you can select a threshold of your choice
@@ -36,7 +36,7 @@ urlpatterns = [
     path("average-number-of-meetings/", views.averageNumberOfMeetings),
     path("average-time-in-meetings/", views.averageTimeInMeetings),
 
-    # 5. Top 3 persons with whom you have meetings
+    # 5. Top 3 persons with whom you have meetings - WIP
     path("most-common-attendees/", views.mostCommonAttendees),
     
     # 6. Time spent in Recruiting/Conducting interviews

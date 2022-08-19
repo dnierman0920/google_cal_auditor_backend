@@ -1,5 +1,6 @@
 from datetime import datetime
 import iso8601 # for date string -> date object
+from pprint import pprint
 
 def event_duration(event):
     """This function takes an event and returns its duration (if it is NOT an all day event)"""
@@ -54,7 +55,7 @@ def events_per_month(events):
     # print("Events Count: ", events_count)
     return(events_count)
 
-# COME BACK TO THIS AND REEVALUATE HOW TO DEAL WITH MONTHS THAT HAVE SAME NUMBER OF MEETINGS!!!
+# !!! COME BACK TO THIS AND REEVALUATE HOW TO DEAL WITH MONTHS THAT HAVE SAME NUMBER OF MEETINGS !!!
 def most_and_least_meetings_per_month(events_count: dict):
     """this function returns a dictionary that has the 'year, month' as the key and number of meetings
      that month as the value - for the months with the most and least meetings""" 
@@ -102,6 +103,55 @@ def most_and_least_meetings_per_month(events_count: dict):
         "lest_meetings": least_meetings
         }
     )
+
+def rank_attendees_by_meetings(events):
+    """This function will show how many meetings you have had with each attendee"""
+
+    # attendee_count dictionary will store 'attendee: meeting(event) count'
+    attendee_count = {}
+
+    # loop through each event and pull the attendee list
+    for event in events:
+        # if the attendees list is zero skip the iteration and go on to next event ****
+        if not "attendees" in event: 
+            continue
+        # loop through each attendee list to pull the attendees
+        for attendee in event["attendees"]:
+            if not "email" in attendee: # found some attendees without display names..(accounting for it here -> come back to with alterantive solution --> changed it to email for now)
+                continue
+            else:
+                email = attendee["email"]
+                if email in attendee_count:
+                    attendee_count[email] += 1
+                # if the attendees name is not in the dictionary add with value = 1
+                elif "self" not in attendee: # self only appears as a key if it is true
+                    print("new attendee: ", attendee)
+                    attendee_count[email] = 1
+
+    # print("attendee_count: ", attendee_count)
+
+    # sort the list from greatest to least
+    sorted_attendee_count = sorted(attendee_count.items(), key=lambda x: x[1], reverse=True)
+    # print("sorted_attendee_count: ", sorted_attendee_count)
+
+    #return top three most common attendees
+    top_three_attendees = {}
+
+    i = 0
+    for key, value in sorted_attendee_count:
+        if i < 3:
+            top_three_attendees[key] = value
+            i += 1 
+        else:
+            break
+    # print("top_three_attendees", top_three_attendees)
+
+    return(top_three_attendees)
+
+
+
+
+
 
 
         

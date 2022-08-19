@@ -1,18 +1,26 @@
 from django.http import HttpResponse
 import datetime
-from .toolbox.datesAndTimes import event_duration, events_per_month, most_and_least_meetings_per_month
+from .toolbox.datesAndTimes import event_duration, events_per_month, most_and_least_meetings_per_month, rank_attendees_by_meetings
 from rest_framework import status
 from .authenticate import authenitcate
 from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse 
 
-nowDatetime = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-
 def pastMonths(monthsAgo: int):
     # Subtract 20 months from a given datetime object
     return datetime.datetime.now() - relativedelta(months=monthsAgo) 
 
+# vars repeated in multiple requests
+nowDatetime = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+todayDate = nowDatetime
+threeMonthsAgoDate = pastMonths(3).isoformat() + 'Z' 
+
+
 service  = authenitcate()
+
+#**************************************************************************************************
+#                               ALL EVENTS (FOR TESTING    
+#**************************************************************************************************
 
 def allEvents(request):
 
@@ -29,13 +37,13 @@ def allEvents(request):
         # Prints the start and name of the next 10 events
         return JsonResponse({'AllEvents': events }, status=status.HTTP_201_CREATED)
 
-# This will show Total time spent in meetings per month for the last 3 months
+#**************************************************************************************************
+#                               TOTAL TIME SPENT IN MEETINGS    
+#**************************************************************************************************
+
 def timeInMeetings(request):
         # variables to return in response
         totalMeetingDuration = datetime.timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0) # total time in meetings
-        print("totalMeetingDuration Starting Point: ", totalMeetingDuration)
-        todayDate = nowDatetime
-        threeMonthsAgoDate = pastMonths(3).isoformat() + 'Z' 
 
         # Call the Calendar API
         events_result = service.events().list(calendarId='primary',
@@ -44,6 +52,8 @@ def timeInMeetings(request):
                                               timeMin = threeMonthsAgoDate,
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
+
+        # loop through events, pull start and end time, calculate duration
         for event in events:
             duration = event_duration(event)
             if duration:   # sometimes duration returns None for all day events
@@ -58,9 +68,11 @@ def timeInMeetings(request):
                             "minutes": minutes
                         } }, status=status.HTTP_200_OK)
 
-def mostMeetings(request):
-    todayDate = nowDatetime
+#**************************************************************************************************
+#                               MONTHS WITH MOST AND LEAST MEETINGS   
+#**************************************************************************************************
 
+def mostMeetings(request):
     # Call the Calendar API
     events_result = service.events().list(calendarId='primary',
                                             singleEvents=True,
@@ -72,6 +84,25 @@ def mostMeetings(request):
     return JsonResponse({"most_and_least_meetings_per_month":
                 most_least_meetings_by_month}
                  , status=status.HTTP_200_OK)
+
+#**************************************************************************************************
+#                                   MOST COMMON ATTENDEES   
+#**************************************************************************************************                 
+
+def mostCommonAttendees(request):
+        # Call the Calendar API
+    events_result = service.events().list(calendarId='primary',
+                                            singleEvents=True,
+                                            timeMin = threeMonthsAgoDate,
+                                            orderBy='startTime').execute()
+    events = events_result.get('items', [])
+    top_three_attendees = rank_attendees_by_meetings(events)
+    return JsonResponse({"most_common_attendees":
+            top_three_attendees}
+                , status=status.HTTP_200_OK)
+
+
+
 def busiestWeek(request):
     return HttpResponse("This will show Busiest week - you can select a threshold of your choice")
 def relaxedWeek(request):
@@ -80,8 +111,6 @@ def averageNumberOfMeetings(request):
     return HttpResponse("This will show The average number of meetings per week")
 def averageTimeInMeetings(request):
     return HttpResponse("This will show The average time spent every week in meetings")
-def mostCommonAttendees(request):
-    return HttpResponse("This will show Top 3 persons with whom you have meetings")
 def timeSpentInterviewing(request):
     return HttpResponse("This will show Time spent in Recruiting/Conducting interviews")
 

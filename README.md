@@ -44,3 +44,18 @@
     }
 }
 ```
+---
+### METHOD: GET
+ ```
+ {{url}}/most-common-attendees/
+```
+#### Example JSON Response:
+```JSON
+{
+    "most_common_attendees": {
+        "dejgne@yourlekgneisba.com": 82,
+        "legeeah.niegeerman@gmaegeil.com": 3,
+        "niermagendaniel@gmaegeeil.com": 2
+    }
+}
+```
