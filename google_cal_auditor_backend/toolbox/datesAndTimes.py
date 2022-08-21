@@ -1,6 +1,5 @@
 from datetime import datetime
 import iso8601 # for date string -> date object
-from pprint import pprint
 
 def event_duration(event):
     """This function takes an event and returns its duration (if it is NOT an all day event)"""
@@ -81,7 +80,8 @@ def most_and_least_meetings_per_month(events_count: dict):
                 most_meetings = events_count[year][month]
                 most_meetings_month = {
                                         "year":year,
-                                        "month":month
+                                        "month":month,
+                                        "count": most_meetings,
                                     }
 
             # find least meetings (not including months with zero meetings)
@@ -89,7 +89,8 @@ def most_and_least_meetings_per_month(events_count: dict):
                 least_meetings = events_count[year][month]
                 least_meetings_month = {
                                         "year":year,
-                                        "month":month
+                                        "month":month,
+                                        "count": least_meetings
                                     }
 
     # print("most_meetings_month: ", most_meetings_month )
@@ -98,9 +99,7 @@ def most_and_least_meetings_per_month(events_count: dict):
     return(
         {
         "most_meetings_month": most_meetings_month,
-        "most_meetings": most_meetings,
-        "least_meetings_month": least_meetings_month,
-        "lest_meetings": least_meetings
+        "least_meetings_month": least_meetings_month
         }
     )
 
@@ -125,7 +124,7 @@ def rank_attendees_by_meetings(events):
                     attendee_count[email] += 1
                 # if the attendees name is not in the dictionary add with value = 1
                 elif "self" not in attendee: # self only appears as a key if it is true
-                    print("new attendee: ", attendee)
+                    # print("new attendee: ", attendee)
                     attendee_count[email] = 1
 
     # print("attendee_count: ", attendee_count)
@@ -149,13 +148,3 @@ def rank_attendees_by_meetings(events):
     return(top_three_attendees)
 
 
-
-
-
-
-
-        
-
-
-
-        

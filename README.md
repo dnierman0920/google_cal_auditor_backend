@@ -33,14 +33,14 @@
     "most_and_least_meetings_per_month": {
         "most_meetings_month": {
             "year": 2018,
-            "month": 7
+            "month": 7,
+            "count": 24
         },
-        "most_meetings": 24,
         "least_meetings_month": {
             "year": 2012,
-            "month": 6
-        },
-        "lest_meetings": 1
+            "month": 6,
+            "count": 1
+        }
     }
 }
 ```

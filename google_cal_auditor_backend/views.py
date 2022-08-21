@@ -6,6 +6,7 @@ from .authenticate import authenitcate
 from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse 
 
+#  CLEAN THIS UP TO FIND A BETTER PLACE FOR IT?
 def pastMonths(monthsAgo: int):
     # Subtract 20 months from a given datetime object
     return datetime.datetime.now() - relativedelta(months=monthsAgo) 
@@ -52,6 +53,8 @@ def timeInMeetings(request):
                                               timeMin = threeMonthsAgoDate,
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
+
+        # ****** CLEAN THIS UP BY PUTTING THE FOR LOOP BEFORE INTO DURATION FUNCITON IN TOOL ****
 
         # loop through events, pull start and end time, calculate duration
         for event in events:
@@ -101,16 +104,18 @@ def mostCommonAttendees(request):
             top_three_attendees}
                 , status=status.HTTP_200_OK)
 
+#**************************************************************************************************
+#                                   BELOW IS WORK IN PROGRESS  
+#**************************************************************************************************   
 
-
-def busiestWeek(request):
-    return HttpResponse("This will show Busiest week - you can select a threshold of your choice")
-def relaxedWeek(request):
-    return HttpResponse("This will show Relaxed week week - you can select a threshold of your choice")
-def averageNumberOfMeetings(request):
-    return HttpResponse("This will show The average number of meetings per week")
-def averageTimeInMeetings(request):
-    return HttpResponse("This will show The average time spent every week in meetings")
-def timeSpentInterviewing(request):
-    return HttpResponse("This will show Time spent in Recruiting/Conducting interviews")
+# def busiestWeek(request):
+#     return HttpResponse("This will show Busiest week - you can select a threshold of your choice")
+# def relaxedWeek(request):
+#     return HttpResponse("This will show Relaxed week week - you can select a threshold of your choice")
+# def averageNumberOfMeetings(request):
+#     return HttpResponse("This will show The average number of meetings per week")
+# def averageTimeInMeetings(request):
+#     return HttpResponse("This will show The average time spent every week in meetings")
+# def timeSpentInterviewing(request):
+#     return HttpResponse("This will show Time spent in Recruiting/Conducting interviews")
 

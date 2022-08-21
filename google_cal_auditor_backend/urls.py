@@ -27,18 +27,18 @@ urlpatterns = [
     # 2. Which month had the highest number of meetings / least number of meetings - COMPLETED
     path("most-meetings/", views.mostMeetings,name = "most-meetings"),
 
-    # 3. Busiest week / relaxed week - you can select a threshold of your choice
-    path("busiest-week/", views.busiestWeek, name = 'busiest-week'),
-    path("relaxed-week/", views.relaxedWeek, name = 'relaxed-week'),
+    # # 3. Busiest week / relaxed week - you can select a threshold of your choice
+    # path("busiest-week/", views.busiestWeek, name = 'busiest-week'),
+    # path("relaxed-week/", views.relaxedWeek, name = 'relaxed-week'),
 
-    # 4. The average number of meetings per week, average time spent every week in
-    # meetings.
-    path("average-number-of-meetings/", views.averageNumberOfMeetings),
-    path("average-time-in-meetings/", views.averageTimeInMeetings),
+    # # 4. The average number of meetings per week, average time spent every week in
+    # # meetings.
+    # path("average-number-of-meetings/", views.averageNumberOfMeetings),
+    # path("average-time-in-meetings/", views.averageTimeInMeetings),
 
-    # 5. Top 3 persons with whom you have meetings - WIP
+    # 5. Top 3 persons with whom you have meetings - COMPLETED
     path("most-common-attendees/", views.mostCommonAttendees),
     
-    # 6. Time spent in Recruiting/Conducting interviews
-    path("time-spent-interviewing/", views.timeSpentInterviewing),
+#     # 6. Time spent in Recruiting/Conducting interviews
+#     path("time-spent-interviewing/", views.timeSpentInterviewing),
 ]
